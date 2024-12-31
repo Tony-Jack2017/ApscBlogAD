@@ -4,7 +4,6 @@ import MainSidebar from "./components/MainSidebar";
 import MainHeader from "./components/MainHeader";
 import MainFooter from "./components/MainFooter";
 import { CSSProperties, useEffect, useRef, useState } from "react";
-import { relative } from "path";
 
 const MainLayout = () => {
 
