@@ -1,0 +1,23 @@
+@mixin device($device) {
+  @if $device == "LPC" {
+    @media (min-width: 1920px) {
+      @content;
+    }
+  } @else if $device == "MPC" {
+    @media (min-width: 1700px) {
+      @content;
+    }
+  } @else if $device == "SPC" {
+    @media (min-width: 1200px) {
+      @content;
+    }
+  } @else if $device == "TB" {
+    @media (min-width: 768px) {
+      @content;
+    }
+  }  @else {
+    @media (min-width: 450px) {
+      @content;
+    }
+  }
+}

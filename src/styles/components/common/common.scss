@@ -1,0 +1,23 @@
+////////////    Container   ////////////
+
+.container {
+  width: 100%;
+  &—page {
+    @include device("MPC") {
+      width: 100%;
+      height: 100%;
+    }
+  }
+  &-section {
+    @include device("MPC") {
+      margin: 0 auto;
+      max-width: 1140px;
+    }
+  }
+}
+
+////////////    Card   ////////////
+.card {
+  padding: 1rem;
+}
+
