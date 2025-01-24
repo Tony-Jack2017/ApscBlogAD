@@ -1,8 +1,5 @@
 import { FC } from "react";
 import Divider from '@mui/material/Divider';
-
-import { ComponentType } from "@/types/common";
-
 import Logo from "@/assets/logo/logo-brand.png"
 import { MenuItem, MenuList } from "@mui/material";
 

@@ -5,10 +5,12 @@ interface MainFooterItf extends ComponentType {}
 
 const MainFooter: FC<MainFooterItf> = (props) => {
 
-  const { } = props
+  const { 
+    style
+  } = props
 
   return (
-    <div className="footer">
+    <div style={style} className="footer">
       MainFooter
       <p></p>
     </div>
