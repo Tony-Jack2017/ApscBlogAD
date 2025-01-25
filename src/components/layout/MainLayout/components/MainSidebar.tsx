@@ -22,7 +22,7 @@ const MainSidebar: FC<MainSidebarItf> = (props) => {
       <div className="sidebar-header">
         <img className="logo" src={Logo} alt="logo" />
       </div>
-      <Divider />
+      <Divider style={{ width: "100%" }} />
       <div className="sidebar-content">
         <MenuList>
           {
@@ -34,7 +34,9 @@ const MainSidebar: FC<MainSidebarItf> = (props) => {
           }
         </MenuList>
       </div>
+      <Divider style={{ width: "100%" }} />
       <div className="sidebar-footer">
+
       </div>
     </div>
   );

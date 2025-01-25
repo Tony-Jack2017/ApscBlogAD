@@ -7,7 +7,7 @@ interface ContainerItf extends ComponentType {
   layout?: "grid"
 }
 
-const Container = forwardRef<HTMLDivElement, ContainerItf>((props, ref) => {
+const ComContainer = forwardRef<HTMLDivElement, ContainerItf>((props, ref) => {
   const { type, className, style, children } = props;
 
   const classes = classNames(className, `"container-type_${type}"`);
@@ -21,4 +21,4 @@ const Container = forwardRef<HTMLDivElement, ContainerItf>((props, ref) => {
   );
 });
 
-export default Container;
+export default ComContainer;

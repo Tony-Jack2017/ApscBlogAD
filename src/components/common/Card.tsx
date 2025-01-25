@@ -4,7 +4,7 @@ import { forwardRef } from "react";
 
 interface CardItf extends ComponentType {}
 
-const Card = forwardRef<HTMLDivElement, CardItf>((props, ref) => {
+const ComCard = forwardRef<HTMLDivElement, CardItf>((props, ref) => {
   const { children, className, style } = props;
 
   const classes = classNames(className, `"card"`);
@@ -17,4 +17,4 @@ const Card = forwardRef<HTMLDivElement, CardItf>((props, ref) => {
   );
 });
 
-export default Card;
+export default ComCard;
