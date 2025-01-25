@@ -4,6 +4,7 @@ import router from "./router";
 
 import "@/styles/theme/light.css"
 import "@/styles/component/layout/main.scss"
+import "@/styles/component/common/common.scss"
 
 function App() {
   return (

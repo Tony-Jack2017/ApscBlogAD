@@ -1,6 +1,11 @@
-$background: hsla(var(--background), var(--opacity));
 $primaryColor: hsla(var(--primary-color), var(--opacity));
 $secondaryColor: hsla(var(--secondary-color), var(--opacity));
+$textColor: hsla(var(--text-color), var(--text-opacity));
+$borderColor: hsla(var(--border-color), var(--border-opacity));
+
+$background: hsla(var(--background), var(--opacity));
+$containerBg: hsla(var(--container-bg), var(--container-bg-opacity));
 
 
 $boxShadow: hsla(var(--shadow-color), var(--shadow-opacity));
+

@@ -1,5 +1,4 @@
 import { FC } from "react";
-import Divider from '@mui/material/Divider';
 import Logo from "@/assets/logo/logo-brand.png"
 import { MenuItem, MenuList } from "@mui/material";
 import { ComponentType } from "@/types/common";
@@ -22,7 +21,6 @@ const MainSidebar: FC<MainSidebarItf> = (props) => {
       <div className="sidebar-header">
         <img className="logo" src={Logo} alt="logo" />
       </div>
-      <Divider style={{ width: "100%" }} />
       <div className="sidebar-content">
         <MenuList>
           {
@@ -34,9 +32,8 @@ const MainSidebar: FC<MainSidebarItf> = (props) => {
           }
         </MenuList>
       </div>
-      <Divider style={{ width: "100%" }} />
       <div className="sidebar-footer">
-
+        V 1.0.0
       </div>
     </div>
   );

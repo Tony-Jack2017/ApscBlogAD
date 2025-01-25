@@ -1,11 +1,20 @@
 #app[data-theme="dark"] {
-  --color: 0, 0%, 100%;
-  --color-opacity: 0.87;
-  --opacity: 1;
-  --background: 210, 29%, 97%;
+
   --primary-color: "";
   --secondary-color: "";
   --third-color: "";
+  --opacity: 1;
+
+  --text-color: 0, 0%, 100%;
+  --text-opacity: 0.87;
+  --background: 210, 29%, 97%;
+  --bg-opacity: 1;
+  --container-bg: 0, 0%, 0%;
+  --container-bg-opacity: 1;
+
   --shadow-color: 218, 14%, 80%;
   --shadow-opacity: 0.6;
+  --border-color: 0, 0%, 0%;
+  --border-opacity: 0.2;
+
 }

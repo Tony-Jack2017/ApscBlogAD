@@ -19,8 +19,8 @@
 
 #app {
   color-scheme: light dark;
-  color: hsla(var(--color), var(--color-opacity));
-  background-color: hsla(var(--background), var(--opacity));
+  color: hsla(var(--text-color), var(--text-opacity));
+  background-color: hsla(var(--background), var(--bg-opacity));
 }
 
 body {
