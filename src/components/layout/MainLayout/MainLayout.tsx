@@ -20,20 +20,19 @@ const MainLayout = () => {
 
   useEffect(() => {
     if(sidebar.current && header.current) {
-      console.log(sidebar.current.offsetWidth)
       setLayoutStyle({
         left: { marginLeft: sidebar.current.offsetWidth },
-        content: { paddingTop: sidebar.current.offsetHeight },
+        content: { paddingTop: header.current.offsetHeight },
       })
     }
   }, [])
 
   return (
     <Container className="main-layout" type="page">
-      <div ref={sidebar} className="main-sidebar">
-        <MainSidebar />
+      <div ref={sidebar} className="main-sidebar layout-left">
+        <MainSidebar sidebarMenu={[]} />
       </div>
-      <div style={{...layoutStyle!.left, position: "relative"}}>
+      <div className="layout-right" style={{...layoutStyle!.left, position: "relative", height: "100vh"}}>
         <div ref={header} className="main-header">
           <MainHeader />
         </div>

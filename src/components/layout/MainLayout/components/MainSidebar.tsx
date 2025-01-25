@@ -2,14 +2,16 @@ import { FC } from "react";
 import Divider from '@mui/material/Divider';
 import Logo from "@/assets/logo/logo-brand.png"
 import { MenuItem, MenuList } from "@mui/material";
+import { ComponentType } from "@/types/common";
 
 interface MainSidebarItf extends ComponentType {
-  sidebarMenu: []
+  sidebarMenu: string[]
 }
 
 const MainSidebar: FC<MainSidebarItf> = (props) => {
   const {
-    sidebarMenu, style
+    style,
+    sidebarMenu
   } = props;
 
   const innerStyle = Object.assign({
@@ -33,7 +35,6 @@ const MainSidebar: FC<MainSidebarItf> = (props) => {
         </MenuList>
       </div>
       <div className="sidebar-footer">
-
       </div>
     </div>
   );
