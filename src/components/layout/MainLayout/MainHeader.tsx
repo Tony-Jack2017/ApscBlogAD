@@ -1,7 +1,7 @@
 import { FC } from "react";
 import classNames from "classnames";
 import { IconCalendarEvent, IconSearch, IconBell } from "@tabler/icons-react";
-import { Avatar, Divider } from "@mui/material";
+import { Avatar} from "@mui/material";
 
 import { ComponentType } from "@/types/common";
 import ComIcon from "@/components/common/Icon";

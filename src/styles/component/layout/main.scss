@@ -1,5 +1,6 @@
 @use "@/styles/common/var.scss" as vars;
 @use "@/styles/common/mixin.scss" as mixins;
+@use "./components.scss";
 
 ////////////    Main Layout   ////////////
 .main-layout {
@@ -69,7 +70,7 @@
   &-content {
     flex: 1;
     #sidebar-menu {
-      padding: 1rem;
+      padding: .25rem;
     }
   }
   &-footer {

@@ -1,0 +1,74 @@
+@use "@/styles/common/var.scss" as vars;
+@use "@/styles/common/mixin.scss" as mixins;
+
+////////////    Main Layout   ////////////
+#sidebar-menu {
+  ul {
+    font-family: "IBM Plex Sans", sans-serif;
+    box-sizing: border-box;
+    padding: 6px;
+    margin: 12px 0;
+    min-width: 200px;
+    border-radius: 12px;
+    overflow: auto;
+    outline: 0;
+  }
+  .item-sub {
+    overflow: hidden;
+    transition: all .3s ease-in-out;
+  }
+  .sub-menu {
+    margin-bottom: 8px;
+    ul {
+      border-radius: 0;
+      background-color: vars.$background;
+      padding-left: 1.5rem;
+      margin: 0;
+    }
+  }
+  .menu-section {
+    font-size: 0.85rem;
+    list-style: none;
+    .label {
+      text-align: left;
+      margin-left: 0.5rem;
+      margin: 0.25rem 0;
+    }
+    & > ul {
+      padding-left: 1em;
+    }
+  }
+  .menu-item {
+    &-sub,
+    & {
+      list-style: none;
+      padding: 8px;
+      border-radius: 8px;
+      cursor: pointer;
+      user-select: none;
+      font-size: 1rem;
+      @include mixins.flex(row, flex-start, center);
+      .menu-icon {
+        @include mixins.flex(row, center, center);
+      }
+      .title {
+        margin-left: 12px;
+        flex: 1;
+        text-align: left;
+      }
+    }
+
+    &:not(:last-of-type) {
+      margin-bottom: 6px;
+    }
+
+    &:not(&_selected):hover {
+      background-color: hsla(vars.$secondaryColor, 0.15);
+    }
+
+    &_selected {
+      color: vars.$textColor;
+      background-color: hsla(vars.$secondaryColor, 1);
+    }
+  }
+}

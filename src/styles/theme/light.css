@@ -1,7 +1,7 @@
 #app[data-theme="light"] {
 
-  --primary-color: "";
-  --secondary-color: "";
+  --primary-color: 33, 93%, 42%;
+  --secondary-color: 43, 99%, 46%;
   --third-color: "";
   --opacity: 1;
 

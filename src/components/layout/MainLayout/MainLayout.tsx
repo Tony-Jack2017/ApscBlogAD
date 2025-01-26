@@ -3,9 +3,9 @@ import { Outlet } from "react-router";
 
 
 import Container from "../../common/Container";
-import MainSidebar from "./components/MainSidebar";
-import MainHeader from "./components/MainHeader";
-import MainFooter from "./components/MainFooter";
+import MainSidebar from "./MainSidebar";
+import MainHeader from "./MainHeader";
+import MainFooter from "./MainFooter";
 
 const MainLayout = () => {
 
