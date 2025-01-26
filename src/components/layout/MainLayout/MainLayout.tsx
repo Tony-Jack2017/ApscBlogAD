@@ -1,9 +1,11 @@
+import { CSSProperties, useEffect, useRef, useState } from "react";
 import { Outlet } from "react-router";
+
+
 import Container from "../../common/Container";
 import MainSidebar from "./components/MainSidebar";
 import MainHeader from "./components/MainHeader";
 import MainFooter from "./components/MainFooter";
-import { CSSProperties, useEffect, useRef, useState } from "react";
 
 const MainLayout = () => {
 
@@ -19,20 +21,27 @@ const MainLayout = () => {
   })
 
   useEffect(() => {
-    if(sidebar.current && header.current) {
-      setLayoutStyle({
-        left: { marginLeft: sidebar.current.offsetWidth },
-        content: { paddingTop: header.current.offsetHeight },
-      })
+    const setLayout = () => {
+      if (sidebar.current && header.current) {
+        setLayoutStyle({
+          left: { marginLeft: sidebar.current.offsetWidth },
+          content: { paddingTop: header.current.offsetHeight },
+        })
+      }
+    }
+    window.addEventListener("resize", setLayout);
+    setLayout()
+    return () => {
+      window.removeEventListener("resize", setLayout)
     }
   }, [])
 
   return (
     <Container className="main-layout" type="page">
       <div ref={sidebar} className="main-sidebar layout-left">
-        <MainSidebar sidebarMenu={[]} />
+        <MainSidebar />
       </div>
-      <div className="layout-right" style={{...layoutStyle!.left, position: "relative", height: "100vh"}}>
+      <div className="layout-right" style={{ ...layoutStyle!.left, position: "relative", height: "100vh" }}>
         <div ref={header} className="main-header">
           <MainHeader />
         </div>
