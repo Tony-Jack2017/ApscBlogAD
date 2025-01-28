@@ -1,6 +1,6 @@
 import { FC } from "react";
 import classNames from "classnames";
-import { IconCalendarEvent, IconSearch, IconBell } from "@tabler/icons-react";
+import { IconCalendarEvent, IconSearch, IconBell, IconAlignLeft } from "@tabler/icons-react";
 import { Avatar} from "@mui/material";
 
 import { ComponentType } from "@/types/common";
@@ -31,8 +31,8 @@ const MainHeader: FC<MainHeaderItf> = (props) => {
   return (
     <div className="header">
       <div className="header-left">
-        <IconCalendarEvent strokeWidth={2} />
-        <span> January, 25, 2025</span>
+        <IconAlignLeft strokeWidth={2} />
+        {/* <span> January, 25, 2025</span> */}
       </div>
       <NavBar className="header-right" />
     </div>

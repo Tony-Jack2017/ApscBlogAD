@@ -38,9 +38,25 @@
   }
   .main-content {
     box-sizing: border-box;
+    overflow: auto;
+    .page-header {
+      @include mixins.flex(row, space-between, center);
+      padding: 0 2rem;
+      .page-title {
+        margin: .5rem 0;
+        font-size: 1.5rem;
+        font-weight: 600;
+        text-transform: uppercase;
+      }
+      .page-date {
+        @include mixins.flex(row, flex-start, center, 12px);
+        font-size: 16px;
+        font-weight: 600;
+      }
+    }
   }
   .main-footer {
-    height: 72px;
+    height: 64px;
   }
 }
 

@@ -5,16 +5,24 @@
 
 .container {
   width: 100%;
-  &—page {
-    @include mixins.device("MPC") {
+  &-type {
+    box-sizing: border-box;
+    &_page {
       width: 100%;
       height: 100%;
+      @include mixins.device("LPC") {
+        padding: 2rem;        
+      }
     }
-  }
-  &-section {
-    @include mixins.device("MPC") {
-      margin: 0 auto;
-      max-width: 1140px;
+    &_section {
+      @include mixins.device("LPC") {
+        margin: 0 auto;
+        max-width: 1720px;
+      }
+      // @include mixins.device("MPC") {
+      //   margin: 0 auto;
+      //   max-width: 1140px;
+      // }
     }
   }
 }

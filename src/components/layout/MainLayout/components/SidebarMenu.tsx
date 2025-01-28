@@ -140,9 +140,11 @@ const MenuItem: FC<MenuItemItf> = (props) => {
     }
   }, []);
 
-  const handleClick = (type: ItemType["type"], path: string) => {
+  const handleClick = (type: ItemType["type"], path: string, title?: string) => {
     if (type === "item") {
-      navigator(path);
+      navigator(path, {
+        state: { title: title }
+      });
     } else if (type === "sub-menu") {
       const subMenuEl = subMenu.current;
       if (subMenuEl) {
@@ -184,7 +186,7 @@ const MenuItem: FC<MenuItemItf> = (props) => {
     return (
       <BaseMenuItem
         className={classNames("menu-item", { "menu-item_selected": path === location.pathname })}
-        onClick={() => handleClick(type, path as string)}
+        onClick={() => handleClick(type, path as string, title)}
       >
         <span className="menu-icon">{icon}</span>
         <span className="title">{title}</span>

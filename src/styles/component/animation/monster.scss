@@ -1,0 +1,79 @@
+/* monster */
+.monster{
+  --eyeBallBg: #0a0909;
+  --eyeRadius: 10px;
+  --jumpHeight: -50px;
+  border-radius: 20%;
+  position: relative;
+  display:flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  animation:jumping 1.2s infinite alternate ease-in-out;
+
+  & .eye{
+    width:40%;
+    height:40%;
+    border-radius: 50%;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+  }
+  & .eye .eyeball{
+    width:50%;
+    height:50%;
+    border-radius:50%;
+    animation: eyemove 1.6s infinite alternate ease-in-out;
+  }
+  & .mouth{
+    width: 32%;
+    height: 12%;
+    margin-top: 15%; 
+  }
+  &::before,
+  &::after{
+    content: "";
+    display:block;
+    width: 20%;
+    height: 10%;
+    background-color:var(--eyeBallBg);
+    border-radius: var(--eyeRadius);
+    position: absolute;
+    left: 50%;
+    top: -10%;
+  }
+  &::before{
+    transform: translateX(-70%) rotate(45deg);
+  }
+  &::after{
+    transform: translateX(-30%) rotate(-45deg);
+  }
+}
+
+/* jumping */
+@keyframes jumping{
+  0%{
+      top:0;
+      box-shadow: 0px 10px 20px rgba(0,0,0,0.2);
+  }
+  50%{
+      top:0;
+      box-shadow: 0px 10px 20px rgba(0,0,0,0.2);
+  }
+  100%{
+      top: var(--jumpHeight);
+      box-shadow: 0px 120px 50px rgba(0,0,0,0.2);
+  }
+}
+
+/* eyeball movement */
+@keyframes eyemove{
+  0%,
+  10% {
+    transform: translate(50%);
+  }
+  90%,
+  100% {
+    transform: translate(-50%);
+  }
+}

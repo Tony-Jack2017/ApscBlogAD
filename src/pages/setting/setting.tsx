@@ -1,7 +1,10 @@
 
 const SettingPage = () => {
   return (
-    <div>setting</div>
+    <div>
+      <h1>setting</h1>
+
+    </div>
   )
 }
 

@@ -1,28 +1,34 @@
-import { createBrowserRouter } from "react-router";
+import { lazy } from "react";
+import { createBrowserRouter, Navigate } from "react-router";
 
 import MainLayout from "@/components/layout/MainLayout/MainLayout";
 
 // Auth //
-import ForgetPwdPage from "@/pages/auth/forgetPwd";
-import SignInPage from "@/pages/auth/signIn";
-import SignUpPage from "@/pages/auth/signUp";
+const ForgetPwdPage = lazy(() => import("@/pages/auth/forgetPwd"));
+const SignInPage = lazy(() => import("@/pages/auth/signIn"));
+const SignUpPage = lazy(() => import("@/pages/auth/signUp"));
 
 // Home //
-import DashboardPage from "@/pages/home/dashboard";
+const DashboardPage = lazy(() => {
+  return new Promise(resolve => {
+    setTimeout(() => resolve(import("@/pages/home/dashboard")), 3000); // 模拟3秒的延迟
+  });
+});
 
 // Blog //
-import BlogListPage from "@/pages/blog/list";
+const BlogListPage = lazy(() => import("@/pages/blog/list"));
 
 // Other //
-import SettingPage from "@/pages/setting/setting";
+const SettingPage = lazy(() => import("@/pages/setting/setting"));
 
 export default createBrowserRouter([
   {
     path: "/",
     element: <MainLayout />,
     children: [
-      { path: "dashboard", index: true, element: <DashboardPage /> },
-      {
+      { index: true, path:"/", element:<Navigate to="/dashboard" /> },
+      { path: "dashboard", element: <DashboardPage /> },
+      { 
         path: "aritcle",
         children: [{ path: "list", index: true, element: <BlogListPage /> }],
       },

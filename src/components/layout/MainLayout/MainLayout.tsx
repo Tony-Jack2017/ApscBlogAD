@@ -1,13 +1,18 @@
-import { CSSProperties, useEffect, useRef, useState } from "react";
-import { Outlet } from "react-router";
+import { CSSProperties, Suspense, useEffect, useRef, useState } from "react";
+import { Outlet, useLocation } from "react-router";
 
 
 import Container from "../../common/Container";
 import MainSidebar from "./MainSidebar";
 import MainHeader from "./MainHeader";
 import MainFooter from "./MainFooter";
+import { IconCalendarEvent } from "@tabler/icons-react";
+import ComContainer from "../../common/Container";
+import MainLoadingPage from "@/pages/common/loading";
 
 const MainLayout = () => {
+
+  const location = useLocation()
 
   const sidebar = useRef<HTMLDivElement | null>(null)
   const header = useRef<HTMLDivElement | null>(null)
@@ -37,7 +42,7 @@ const MainLayout = () => {
   }, [])
 
   return (
-    <Container className="main-layout" type="page">
+    <div className="main-layout">
       <div ref={sidebar} className="main-sidebar layout-left">
         <MainSidebar />
       </div>
@@ -46,13 +51,22 @@ const MainLayout = () => {
           <MainHeader />
         </div>
         <div style={layoutStyle!.content} className="main-content">
-          <Outlet />
+          <Suspense fallback={<MainLoadingPage />}>
+            <div className="page-header">
+              <p className="page-title">{location.state ? location.state.title : "APSC BUILDER"}</p>
+              <div className="page-date">
+                <IconCalendarEvent strokeWidth={2} />
+                <span> January, 25, 2025</span>
+              </div>
+            </div>
+            <Outlet />
+          </Suspense>
         </div>
         <div className="main-footer">
           <MainFooter />
         </div>
       </div>
-    </Container>
+    </div>
   );
 };
 
