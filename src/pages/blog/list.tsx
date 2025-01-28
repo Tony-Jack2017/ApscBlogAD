@@ -1,10 +1,11 @@
+import ComContainer from "@/components/common/Container";
+import ComTable from "@/components/common/Table";
 
-const BlogListPage = () => {
+export default function BlogListPage () {
   return (
-    <div>
-      This is blog list page
-    </div>
+    <ComContainer type="page">
+      <ComTable />
+    </ComContainer>
+   
   )
 }
-
-export default BlogListPage

@@ -3,6 +3,7 @@ import { createBrowserRouter, Navigate } from "react-router";
 
 import MainLayout from "@/components/layout/MainLayout/MainLayout";
 
+
 // Auth //
 const ForgetPwdPage = lazy(() => import("@/pages/auth/forgetPwd"));
 const SignInPage = lazy(() => import("@/pages/auth/signIn"));
@@ -18,8 +19,12 @@ const DashboardPage = lazy(() => {
 // Blog //
 const BlogListPage = lazy(() => import("@/pages/blog/list"));
 
+// Message //
+const MessagePage = lazy(() => import("@/pages/message/index"));
+
 // Other //
 const SettingPage = lazy(() => import("@/pages/setting/setting"));
+
 
 export default createBrowserRouter([
   {
@@ -30,6 +35,11 @@ export default createBrowserRouter([
       { path: "dashboard", element: <DashboardPage /> },
       { 
         path: "aritcle",
+        children: [{ path: "list", element: <BlogListPage /> }],
+      },
+      { path: "message", element: <MessagePage /> },
+      { 
+        path: "user",
         children: [{ path: "list", index: true, element: <BlogListPage /> }],
       },
       { path: "setting", element: <SettingPage /> },

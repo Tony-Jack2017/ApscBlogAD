@@ -12,6 +12,11 @@
     border-radius: 12px;
     overflow: auto;
     outline: 0;
+    & > * {
+      &:not(:last-child) {
+        margin-bottom: 6px;
+      }
+    }
   }
   .item-sub {
     overflow: hidden;
@@ -56,10 +61,6 @@
         flex: 1;
         text-align: left;
       }
-    }
-
-    &:not(:last-of-type) {
-      margin-bottom: 6px;
     }
 
     &:not(&_selected):hover {

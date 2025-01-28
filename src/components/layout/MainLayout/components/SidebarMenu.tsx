@@ -8,7 +8,8 @@ import {
   useRef,
   useState,
 } from "react";
-import { MenuItem as BaseMenuItem, Menu as BaseMenu } from "@mui/base";
+import { MenuItem as BaseMenuItem }from "@mui/base/MenuItem";
+import { Menu as BaseMenu } from "@mui/base/Menu";
 
 import {
   IconLayoutDashboard,

@@ -10,7 +10,7 @@ interface ContainerItf extends ComponentType {
 const ComContainer = forwardRef<HTMLDivElement, ContainerItf>((props, ref) => {
   const { type, className, style, children } = props;
 
-  const classes = classNames(className, `container-type_${type}`);
+  const classes = classNames(className, "container", `container-type_${type}`);
 
   const innerStyle = Object.assign({}, style);
 
