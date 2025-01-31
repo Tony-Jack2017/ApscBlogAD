@@ -17,8 +17,9 @@ import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
 import { visuallyHidden } from '@mui/utils';
 
-import {IconPlaylistX as DeleteIcon} from '@tabler/icons-react';
-import {IconAdjustmentsAlt as FilterListIcon} from '@tabler/icons-react';
+import { IconPlaylistX as DeleteIcon } from '@tabler/icons-react';
+import { IconAdjustmentsAlt as FilterListIcon } from '@tabler/icons-react';
+import { FC } from 'react';
 
 type Order = 'asc' | 'desc';
 
@@ -31,7 +32,7 @@ interface Data {
   protein: number;
 }
 
-interface HeadCell<T> {
+interface RowCell<T> {
   id: keyof T;
   label: string;
   numeric: boolean;
@@ -40,10 +41,12 @@ interface HeadCell<T> {
 
 interface ComTableItf<D> {
   data: D
-  headerData: HeadCell<D>[]
+  rowData: RowCell<D>[]
+  isSelected: boolean
 }
 
-interface EnhancedTableProps {
+interface EnhancedTableHeadProps {
+  isSelected: boolean
   numSelected: number;
   onRequestSort: (event: React.MouseEvent<unknown>, property: keyof Data) => void;
   onSelectAllClick: (event: React.ChangeEvent<HTMLInputElement>) => void;
@@ -53,7 +56,7 @@ interface EnhancedTableProps {
 }
 
 interface EnhancedTableToolbarProps {
-  numSelected: number;
+  numSelyected: number;
 }
 
 // Data Generate
@@ -74,6 +77,28 @@ function createData(
     protein,
   };
 }
+function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
+  if (b[orderBy] < a[orderBy]) {
+    return -1;
+  }
+  if (b[orderBy] > a[orderBy]) {
+    return 1;
+  }
+  return 0;
+}
+function getComparator<Key extends keyof any>(
+  order: Order,
+  orderBy: Key,
+): (
+  a: { [key in Key]: number | string },
+  b: { [key in Key]: number | string },
+) => number {
+  return order === 'desc'
+    ? (a, b) => descendingComparator(a, b, orderBy)
+    : (a, b) => -descendingComparator(a, b, orderBy);
+}
+
+
 
 const rows = [
   createData(1, 'Cupcake', 305, 3.7, 67, 4.3),
@@ -90,30 +115,7 @@ const rows = [
   createData(12, 'Nougat', 360, 19.0, 9, 37.0),
   createData(13, 'Oreo', 437, 18.0, 63, 4.0),
 ];
-
-function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
-  if (b[orderBy] < a[orderBy]) {
-    return -1;
-  }
-  if (b[orderBy] > a[orderBy]) {
-    return 1;
-  }
-  return 0;
-}
-
-function getComparator<Key extends keyof any>(
-  order: Order,
-  orderBy: Key,
-): (
-  a: { [key in Key]: number | string },
-  b: { [key in Key]: number | string },
-) => number {
-  return order === 'desc'
-    ? (a, b) => descendingComparator(a, b, orderBy)
-    : (a, b) => -descendingComparator(a, b, orderBy);
-}
-
-const headCells: readonly HeadCell[] = [
+const headCells: readonly RowCell<null>[] = [
   {
     id: 'name',
     numeric: false,
@@ -146,7 +148,10 @@ const headCells: readonly HeadCell[] = [
   },
 ];
 
-function EnhancedTableHead(props: EnhancedTableProps) {
+
+
+
+const EnhancedTableHead:FC<EnhancedTableHeadProps> = (props) => {
   const { onSelectAllClick, order, orderBy, numSelected, rowCount, onRequestSort } =
     props;
   const createSortHandler =
@@ -194,7 +199,7 @@ function EnhancedTableHead(props: EnhancedTableProps) {
   );
 }
 
-function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
+const EnhancedTableToolbar:FC<EnhancedTableToolbarProps> = (props: EnhancedTableToolbarProps) => {
   const { numSelected } = props;
   return (
     <Toolbar

@@ -11,9 +11,9 @@ import { Suspense } from "react";
 function App() {
   return (
     <div id="app" data-theme="light">
+      <Suspense fallback={<MainLoadingPage />}>
         <RouterProvider router={router} />
-
-
+      </Suspense>
     </div>
   );
 }

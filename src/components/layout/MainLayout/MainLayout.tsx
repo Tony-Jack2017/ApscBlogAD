@@ -48,7 +48,7 @@ const MainLayout = () => {
       </div>
       <div className="layout-right" style={{ ...layoutStyle!.left, position: "relative", height: "100vh" }}>
         <div ref={header} className="main-header">
-          <MainHeader />
+          <MainHeader />y
         </div>
         <div style={layoutStyle!.content} className="main-content">
           <Suspense fallback={<MainLoadingPage />}>
