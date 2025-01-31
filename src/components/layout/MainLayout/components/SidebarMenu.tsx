@@ -1,14 +1,7 @@
 import classNames from "classnames";
 import { useLocation, useNavigate } from "react-router";
-import {
-  FC,
-  forwardRef,
-  ReactNode,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
-import { MenuItem as BaseMenuItem }from "@mui/base/MenuItem";
+import { FC, forwardRef, ReactNode, useEffect, useRef, useState } from "react";
+import { MenuItem as BaseMenuItem } from "@mui/base/MenuItem";
 import { Menu as BaseMenu } from "@mui/base/Menu";
 
 import {
@@ -37,7 +30,7 @@ const sidebarMenu: MenuItemItf[] = [
         icon: <IconArticle strokeWidth={2.5} />,
         title: "Article",
         list: [
-          { title: "Article List", path: "/aritcle/list" },
+          { title: "Article List", path: "/article/list" },
           { title: "Created Article", path: "/article/create" },
           { title: "Article Comment", path: "/article/comment" },
           { title: "Article Tag", path: "/article/tag" },
@@ -116,7 +109,7 @@ const MenuItem: FC<MenuItemItf> = (props) => {
   const { icon, path, title, type = "item", list } = props;
 
   const navigator = useNavigate();
-  const location = useLocation()
+  const location = useLocation();
 
   const [itemState, setItemState] = useState<{
     height: number;
@@ -141,17 +134,40 @@ const MenuItem: FC<MenuItemItf> = (props) => {
     }
   }, []);
 
-  const handleClick = (type: ItemType["type"], path: string, title?: string) => {
+  useEffect(() => {
+    if(type == "sub-menu"  &&  subMenu.current) {
+      const findPath = list?.findIndex(item => item.path === location.pathname)
+      if (findPath !== -1) {
+        const subMenuEl = subMenu.current
+        if (subMenuEl) {
+          setItemState({
+            open: !itemState.open,
+            height: itemState.open
+              ? itemState.height - subMenuEl.offsetHeight
+              : itemState.height + subMenuEl.offsetHeight,
+          });
+        }
+      }
+    }
+  }, [subMenu.current, type]);
+
+  const handleClick = (
+    type: ItemType["type"],
+    path: string,
+    title?: string
+  ) => {
     if (type === "item") {
       navigator(path, {
-        state: { title: title }
+        state: { title: title },
       });
     } else if (type === "sub-menu") {
       const subMenuEl = subMenu.current;
       if (subMenuEl) {
         setItemState({
           open: !itemState.open,
-          height: itemState.open ? itemState.height - subMenuEl.offsetHeight : itemState.height + subMenuEl.offsetHeight,
+          height: itemState.open
+            ? itemState.height - subMenuEl.offsetHeight
+            : itemState.height + subMenuEl.offsetHeight,
         });
       }
     } else {
@@ -166,7 +182,10 @@ const MenuItem: FC<MenuItemItf> = (props) => {
 
   if (type === "sub-menu" && list) {
     return (
-      <div className="item-sub" style={itemState.height ? { height: itemState.height } : {}}>
+      <div
+        className="item-sub"
+        style={itemState.height ? { height: itemState.height } : {}}
+      >
         <BaseMenuItem
           ref={trigger}
           className="menu-item-sub"
@@ -178,7 +197,7 @@ const MenuItem: FC<MenuItemItf> = (props) => {
             <IconChevronCompactDown size={18} />
           </span>
         </BaseMenuItem>
-        <Menu ref={subMenu} type="sub-menu" list={list} open={false}></Menu>
+        <Menu ref={subMenu} type="sub-menu" list={list}></Menu>
       </div>
     );
   } else if (type === "section" && list) {
@@ -186,7 +205,9 @@ const MenuItem: FC<MenuItemItf> = (props) => {
   } else {
     return (
       <BaseMenuItem
-        className={classNames("menu-item", { "menu-item_selected": path === location.pathname })}
+        className={classNames("menu-item", {
+          "menu-item_selected": path === location.pathname,
+        })}
         onClick={() => handleClick(type, path as string, title)}
       >
         <span className="menu-icon">{icon}</span>

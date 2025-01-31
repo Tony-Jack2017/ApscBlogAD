@@ -15,12 +15,12 @@ import Paper from '@mui/material/Paper';
 import Checkbox from '@mui/material/Checkbox';
 import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Switch from '@mui/material/Switch';
 import { visuallyHidden } from '@mui/utils';
 
 import {IconPlaylistX as DeleteIcon} from '@tabler/icons-react';
 import {IconAdjustmentsAlt as FilterListIcon} from '@tabler/icons-react';
+
+type Order = 'asc' | 'desc';
 
 interface Data {
   id: number;
@@ -31,6 +31,32 @@ interface Data {
   protein: number;
 }
 
+interface HeadCell<T> {
+  id: keyof T;
+  label: string;
+  numeric: boolean;
+  disablePadding: boolean;
+}
+
+interface ComTableItf<D> {
+  data: D
+  headerData: HeadCell<D>[]
+}
+
+interface EnhancedTableProps {
+  numSelected: number;
+  onRequestSort: (event: React.MouseEvent<unknown>, property: keyof Data) => void;
+  onSelectAllClick: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  order: Order;
+  orderBy: string;
+  rowCount: number;
+}
+
+interface EnhancedTableToolbarProps {
+  numSelected: number;
+}
+
+// Data Generate
 function createData(
   id: number,
   name: string,
@@ -75,8 +101,6 @@ function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
   return 0;
 }
 
-type Order = 'asc' | 'desc';
-
 function getComparator<Key extends keyof any>(
   order: Order,
   orderBy: Key,
@@ -87,13 +111,6 @@ function getComparator<Key extends keyof any>(
   return order === 'desc'
     ? (a, b) => descendingComparator(a, b, orderBy)
     : (a, b) => -descendingComparator(a, b, orderBy);
-}
-
-interface HeadCell {
-  disablePadding: boolean;
-  id: keyof Data;
-  label: string;
-  numeric: boolean;
 }
 
 const headCells: readonly HeadCell[] = [
@@ -128,15 +145,6 @@ const headCells: readonly HeadCell[] = [
     label: 'Protein (g)',
   },
 ];
-
-interface EnhancedTableProps {
-  numSelected: number;
-  onRequestSort: (event: React.MouseEvent<unknown>, property: keyof Data) => void;
-  onSelectAllClick: (event: React.ChangeEvent<HTMLInputElement>) => void;
-  order: Order;
-  orderBy: string;
-  rowCount: number;
-}
 
 function EnhancedTableHead(props: EnhancedTableProps) {
   const { onSelectAllClick, order, orderBy, numSelected, rowCount, onRequestSort } =
@@ -185,9 +193,7 @@ function EnhancedTableHead(props: EnhancedTableProps) {
     </TableHead>
   );
 }
-interface EnhancedTableToolbarProps {
-  numSelected: number;
-}
+
 function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
   const { numSelected } = props;
   return (
@@ -205,7 +211,7 @@ function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
     >
       {numSelected > 0 ? (
         <Typography
-          sx={{ flex: '1 1 100%' }}
+          sx={{ flex: '1 1 100%', textAlign: "left" }}
           color="inherit"
           variant="subtitle1"
           component="div"
@@ -214,7 +220,7 @@ function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
         </Typography>
       ) : (
         <Typography
-          sx={{ flex: '1 1 100%' }}
+          sx={{ flex: '1 1 100%', textAlign: "left" }}
           variant="h6"
           id="tableTitle"
           component="div"
@@ -238,7 +244,9 @@ function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
     </Toolbar>
   );
 }
+
 const ComTable = () => {
+
   const [order, setOrder] = React.useState<Order>('asc');
   const [orderBy, setOrderBy] = React.useState<keyof Data>('calories');
   const [selected, setSelected] = React.useState<readonly number[]>([]);
@@ -296,9 +304,7 @@ const ComTable = () => {
     setDense(event.target.checked);
   };
 
-  // Avoid a layout jump when reaching the last page with empty rows.
-  const emptyRows =
-    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
+  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
 
   const visibleRows = React.useMemo(
     () =>
@@ -388,10 +394,6 @@ const ComTable = () => {
           onRowsPerPageChange={handleChangeRowsPerPage}
         />
       </Paper>
-      <FormControlLabel
-        control={<Switch checked={dense} onChange={handleChangeDense} />}
-        label="Dense padding"
-      />
     </Box>
   );
 }

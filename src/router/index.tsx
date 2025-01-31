@@ -3,21 +3,20 @@ import { createBrowserRouter, Navigate } from "react-router";
 
 import MainLayout from "@/components/layout/MainLayout/MainLayout";
 
-
 // Auth //
 const ForgetPwdPage = lazy(() => import("@/pages/auth/forgetPwd"));
 const SignInPage = lazy(() => import("@/pages/auth/signIn"));
 const SignUpPage = lazy(() => import("@/pages/auth/signUp"));
 
 // Home //
-const DashboardPage = lazy(() => {
-  return new Promise(resolve => {
-    setTimeout(() => resolve(import("@/pages/home/dashboard")), 3000); // 模拟3秒的延迟
-  });
-});
+const DashboardPage = lazy(() => import("@/pages/home/dashboard"));
 
 // Blog //
-const BlogListPage = lazy(() => import("@/pages/blog/list"));
+const ArticleListPage = lazy(() => import("@/pages/blog/list"));
+const ArticleCreatePage = lazy(() => import("@/pages/blog/create"));
+const ArticleCommentPage = lazy(() => import("@/pages/blog/comment"));
+const ArticleTagPage = lazy(() => import("@/pages/blog/tag"));
+const ArticleTypePage = lazy(() => import("@/pages/blog/type"));
 
 // Message //
 const MessagePage = lazy(() => import("@/pages/message/index"));
@@ -25,22 +24,27 @@ const MessagePage = lazy(() => import("@/pages/message/index"));
 // Other //
 const SettingPage = lazy(() => import("@/pages/setting/setting"));
 
-
 export default createBrowserRouter([
   {
     path: "/",
     element: <MainLayout />,
     children: [
-      { index: true, path:"/", element:<Navigate to="/dashboard" /> },
+      { index: true, path: "/", element: <Navigate to="/dashboard" /> },
       { path: "dashboard", element: <DashboardPage /> },
-      { 
-        path: "aritcle",
-        children: [{ path: "list", element: <BlogListPage /> }],
+      {
+        path: "article",
+        children: [
+          { path: "list", element: <ArticleListPage /> },
+          { path: "create", element: <ArticleCreatePage /> },
+          { path: "comment", element: <ArticleCommentPage /> },
+          { path: "tag", element: <ArticleTagPage /> },
+          { path: "type", element: <ArticleTypePage /> },
+        ],
       },
       { path: "message", element: <MessagePage /> },
-      { 
+      {
         path: "user",
-        children: [{ path: "list", index: true, element: <BlogListPage /> }],
+        children: [{ path: "list", index: true, element: <ArticleListPage /> }],
       },
       { path: "setting", element: <SettingPage /> },
     ],
