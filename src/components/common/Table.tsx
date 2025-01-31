@@ -1,27 +1,27 @@
-import * as React from 'react';
-import { alpha } from '@mui/material/styles';
-import Box from '@mui/material/Box';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TablePagination from '@mui/material/TablePagination';
-import TableRow from '@mui/material/TableRow';
-import TableSortLabel from '@mui/material/TableSortLabel';
-import Toolbar from '@mui/material/Toolbar';
-import Typography from '@mui/material/Typography';
-import Paper from '@mui/material/Paper';
-import Checkbox from '@mui/material/Checkbox';
-import IconButton from '@mui/material/IconButton';
-import Tooltip from '@mui/material/Tooltip';
-import { visuallyHidden } from '@mui/utils';
+import * as React from "react";
+import { alpha } from "@mui/material/styles";
+import Box from "@mui/material/Box";
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TableCell from "@mui/material/TableCell";
+import TableContainer from "@mui/material/TableContainer";
+import TableHead from "@mui/material/TableHead";
+import TablePagination from "@mui/material/TablePagination";
+import TableRow from "@mui/material/TableRow";
+import TableSortLabel from "@mui/material/TableSortLabel";
+import Toolbar from "@mui/material/Toolbar";
+import Typography from "@mui/material/Typography";
+import Paper from "@mui/material/Paper";
+import Checkbox from "@mui/material/Checkbox";
+import IconButton from "@mui/material/IconButton";
+import Tooltip from "@mui/material/Tooltip";
+import { visuallyHidden } from "@mui/utils";
 
-import { IconPlaylistX as DeleteIcon } from '@tabler/icons-react';
-import { IconAdjustmentsAlt as FilterListIcon } from '@tabler/icons-react';
-import { FC } from 'react';
+import { IconPlaylistX as DeleteIcon } from "@tabler/icons-react";
+import { IconAdjustmentsAlt as FilterListIcon } from "@tabler/icons-react";
+import { FC, ReactNode } from "react";
 
-type Order = 'asc' | 'desc';
+type Order = "asc" | "desc";
 
 interface Data {
   id: number;
@@ -31,32 +31,41 @@ interface Data {
   name: string;
   protein: number;
 }
-
 interface RowCell<T> {
   id: keyof T;
   label: string;
   numeric: boolean;
   disablePadding: boolean;
 }
-
 interface ComTableItf<D> {
-  data: D
-  rowData: RowCell<D>[]
-  isSelected: boolean
+  data: D;
+  rowData: RowCell<D>[];
+  isSorted: boolean;
+  isSelected: boolean;
+  haveSearch: boolean;
+  haveAction: boolean;
+  selectedAction?: ReactNode
+  unSelectedAction?: ReactNode
 }
-
-interface EnhancedTableHeadProps {
-  isSelected: boolean
+interface EnhancedTableToolbarProps {
   numSelected: number;
-  onRequestSort: (event: React.MouseEvent<unknown>, property: keyof Data) => void;
+  haveSearch: boolean;
+  haveAction: boolean;
+  selectedAction: ReactNode;
+  unSelectedAction: ReactNode;
+}
+interface EnhancedTableHeadProps {
+  isSorted: boolean;
+  isSelected: boolean;
+  numSelected: number;
+  onRequestSort: (
+    event: React.MouseEvent<unknown>,
+    property: keyof Data
+  ) => void;
   onSelectAllClick: (event: React.ChangeEvent<HTMLInputElement>) => void;
   order: Order;
   orderBy: string;
   rowCount: number;
-}
-
-interface EnhancedTableToolbarProps {
-  numSelyected: number;
 }
 
 // Data Generate
@@ -66,7 +75,7 @@ function createData(
   calories: number,
   fat: number,
   carbs: number,
-  protein: number,
+  protein: number
 ): Data {
   return {
     id,
@@ -88,72 +97,129 @@ function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
 }
 function getComparator<Key extends keyof any>(
   order: Order,
-  orderBy: Key,
+  orderBy: Key
 ): (
   a: { [key in Key]: number | string },
-  b: { [key in Key]: number | string },
+  b: { [key in Key]: number | string }
 ) => number {
-  return order === 'desc'
+  return order === "desc"
     ? (a, b) => descendingComparator(a, b, orderBy)
     : (a, b) => -descendingComparator(a, b, orderBy);
 }
 
-
-
 const rows = [
-  createData(1, 'Cupcake', 305, 3.7, 67, 4.3),
-  createData(2, 'Donut', 452, 25.0, 51, 4.9),
-  createData(3, 'Eclair', 262, 16.0, 24, 6.0),
-  createData(4, 'Frozen yoghurt', 159, 6.0, 24, 4.0),
-  createData(5, 'Gingerbread', 356, 16.0, 49, 3.9),
-  createData(6, 'Honeycomb', 408, 3.2, 87, 6.5),
-  createData(7, 'Ice cream sandwich', 237, 9.0, 37, 4.3),
-  createData(8, 'Jelly Bean', 375, 0.0, 94, 0.0),
-  createData(9, 'KitKat', 518, 26.0, 65, 7.0),
-  createData(10, 'Lollipop', 392, 0.2, 98, 0.0),
-  createData(11, 'Marshmallow', 318, 0, 81, 2.0),
-  createData(12, 'Nougat', 360, 19.0, 9, 37.0),
-  createData(13, 'Oreo', 437, 18.0, 63, 4.0),
+  createData(1, "Cupcake", 305, 3.7, 67, 4.3),
+  createData(2, "Donut", 452, 25.0, 51, 4.9),
+  createData(3, "Eclair", 262, 16.0, 24, 6.0),
+  createData(4, "Frozen yoghurt", 159, 6.0, 24, 4.0),
+  createData(5, "Gingerbread", 356, 16.0, 49, 3.9),
+  createData(6, "Honeycomb", 408, 3.2, 87, 6.5),
+  createData(7, "Ice cream sandwich", 237, 9.0, 37, 4.3),
+  createData(8, "Jelly Bean", 375, 0.0, 94, 0.0),
+  createData(9, "KitKat", 518, 26.0, 65, 7.0),
+  createData(10, "Lollipop", 392, 0.2, 98, 0.0),
+  createData(11, "Marshmallow", 318, 0, 81, 2.0),
+  createData(12, "Nougat", 360, 19.0, 9, 37.0),
+  createData(13, "Oreo", 437, 18.0, 63, 4.0),
 ];
 const headCells: readonly RowCell<null>[] = [
   {
-    id: 'name',
+    id: "name",
     numeric: false,
     disablePadding: true,
-    label: 'Dessert (100g serving)',
+    label: "Dessert (100g serving)",
   },
   {
-    id: 'calories',
+    id: "calories",
     numeric: true,
     disablePadding: false,
-    label: 'Calories',
+    label: "Calories",
   },
   {
-    id: 'fat',
+    id: "fat",
     numeric: true,
     disablePadding: false,
-    label: 'Fat (g)',
+    label: "Fat (g)",
   },
   {
-    id: 'carbs',
+    id: "carbs",
     numeric: true,
     disablePadding: false,
-    label: 'Carbs (g)',
+    label: "Carbs (g)",
   },
   {
-    id: 'protein',
+    id: "protein",
     numeric: true,
     disablePadding: false,
-    label: 'Protein (g)',
+    label: "Protein (g)",
   },
 ];
 
-
-
-
-const EnhancedTableHead:FC<EnhancedTableHeadProps> = (props) => {
-  const { onSelectAllClick, order, orderBy, numSelected, rowCount, onRequestSort } =
-    props;
+const EnhancedTableToolbar: FC<EnhancedTableToolbarProps> = (props) => {
+  const {
+    haveAction,
+    haveSearch,
+    numSelected,
+    selectedAction,
+    unSelectedAction,
+  } = props;
+  return (
+    <Toolbar
+      className="table-toolbar"
+      sx={[
+        {
+          pl: { sm: 2 },
+          pr: { xs: 1, sm: 1 },
+        },
+        numSelected > 0 && {
+          bgcolor: (theme) =>
+            alpha(
+              theme.palette.primary.main,
+              theme.palette.action.activatedOpacity
+            ),
+        },
+      ]}
+    >
+      <div className="toolbar-desc">
+        {numSelected > 0 ? (
+          <Typography
+            sx={{ textAlign: "left" }}
+            color="inherit"
+            variant="subtitle1"
+            component="div"
+          >
+            {numSelected} selected
+          </Typography>
+        ) : (
+          <Typography
+            sx={{ textAlign: "left" }}
+            variant="h6"
+            id="tableTitle"
+            component="div"
+          >
+            The Article List
+          </Typography>
+        )}
+      </div>
+      {haveAction ? (
+        <div className="toolbar-action">
+          {numSelected > 0 ? selectedAction : unSelectedAction}
+        </div>
+      ) : undefined}
+    </Toolbar>
+  );
+};
+const EnhancedTableHead: FC<EnhancedTableHeadProps> = (props) => {
+  const {
+    isSorted,
+    isSelected,
+    onSelectAllClick,
+    order,
+    orderBy,
+    numSelected,
+    rowCount,
+    onRequestSort,
+  } = props;
   const createSortHandler =
     (property: keyof Data) => (event: React.MouseEvent<unknown>) => {
       onRequestSort(event, property);
@@ -162,33 +228,35 @@ const EnhancedTableHead:FC<EnhancedTableHeadProps> = (props) => {
   return (
     <TableHead>
       <TableRow>
-        <TableCell padding="checkbox">
-          <Checkbox
-            color="primary"
-            indeterminate={numSelected > 0 && numSelected < rowCount}
-            checked={rowCount > 0 && numSelected === rowCount}
-            onChange={onSelectAllClick}
-            inputProps={{
-              'aria-label': 'select all desserts',
-            }}
-          />
-        </TableCell>
+        {isSelected ? (
+          <TableCell padding="checkbox">
+            <Checkbox
+              color="primary"
+              indeterminate={numSelected > 0 && numSelected < rowCount}
+              checked={rowCount > 0 && numSelected === rowCount}
+              onChange={onSelectAllClick}
+              inputProps={{
+                "aria-label": "select all desserts",
+              }}
+            />
+          </TableCell>
+        ) : undefined}
         {headCells.map((headCell) => (
           <TableCell
             key={headCell.id}
-            align={headCell.numeric ? 'right' : 'left'}
-            padding={headCell.disablePadding ? 'none' : 'normal'}
+            align={headCell.numeric ? "right" : "left"}
+            padding={headCell.disablePadding ? "none" : "normal"}
             sortDirection={orderBy === headCell.id ? order : false}
           >
             <TableSortLabel
               active={orderBy === headCell.id}
-              direction={orderBy === headCell.id ? order : 'asc'}
+              direction={orderBy === headCell.id ? order : "asc"}
               onClick={createSortHandler(headCell.id)}
             >
               {headCell.label}
               {orderBy === headCell.id ? (
                 <Box component="span" sx={visuallyHidden}>
-                  {order === 'desc' ? 'sorted descending' : 'sorted ascending'}
+                  {order === "desc" ? "sorted descending" : "sorted ascending"}
                 </Box>
               ) : null}
             </TableSortLabel>
@@ -197,63 +265,19 @@ const EnhancedTableHead:FC<EnhancedTableHeadProps> = (props) => {
       </TableRow>
     </TableHead>
   );
-}
+};
+const ComTable: FC<ComTableItf<string>> = (props) => {
+  const {
+    isSorted = false,
+    haveAction = true,
+    haveSearch = false,
+    isSelected = true,
+    selectedAction,
+    unSelectedAction,
+  } = props;
 
-const EnhancedTableToolbar:FC<EnhancedTableToolbarProps> = (props: EnhancedTableToolbarProps) => {
-  const { numSelected } = props;
-  return (
-    <Toolbar
-      sx={[
-        {
-          pl: { sm: 2 },
-          pr: { xs: 1, sm: 1 },
-        },
-        numSelected > 0 && {
-          bgcolor: (theme) =>
-            alpha(theme.palette.primary.main, theme.palette.action.activatedOpacity),
-        },
-      ]}
-    >
-      {numSelected > 0 ? (
-        <Typography
-          sx={{ flex: '1 1 100%', textAlign: "left" }}
-          color="inherit"
-          variant="subtitle1"
-          component="div"
-        >
-          {numSelected} selected
-        </Typography>
-      ) : (
-        <Typography
-          sx={{ flex: '1 1 100%', textAlign: "left" }}
-          variant="h6"
-          id="tableTitle"
-          component="div"
-        >
-          Nutrition
-        </Typography>
-      )}
-      {numSelected > 0 ? (
-        <Tooltip title="Delete">
-          <IconButton>
-            <DeleteIcon />
-          </IconButton>
-        </Tooltip>
-      ) : (
-        <Tooltip title="Filter list">
-          <IconButton>
-            <FilterListIcon />
-          </IconButton>
-        </Tooltip>
-      )}
-    </Toolbar>
-  );
-}
-
-const ComTable = () => {
-
-  const [order, setOrder] = React.useState<Order>('asc');
-  const [orderBy, setOrderBy] = React.useState<keyof Data>('calories');
+  const [order, setOrder] = React.useState<Order>("asc");
+  const [orderBy, setOrderBy] = React.useState<keyof Data>("calories");
   const [selected, setSelected] = React.useState<readonly number[]>([]);
   const [page, setPage] = React.useState(0);
   const [dense, setDense] = React.useState(false);
@@ -261,13 +285,12 @@ const ComTable = () => {
 
   const handleRequestSort = (
     event: React.MouseEvent<unknown>,
-    property: keyof Data,
+    property: keyof Data
   ) => {
-    const isAsc = orderBy === property && order === 'asc';
-    setOrder(isAsc ? 'desc' : 'asc');
+    const isAsc = orderBy === property && order === "asc";
+    setOrder(isAsc ? "desc" : "asc");
     setOrderBy(property);
   };
-
   const handleSelectAllClick = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.checked) {
       const newSelected = rows.map((n) => n.id);
@@ -276,7 +299,6 @@ const ComTable = () => {
     }
     setSelected([]);
   };
-
   const handleClick = (event: React.MouseEvent<unknown>, id: number) => {
     const selectedIndex = selected.indexOf(id);
     let newSelected: readonly number[] = [];
@@ -290,46 +312,53 @@ const ComTable = () => {
     } else if (selectedIndex > 0) {
       newSelected = newSelected.concat(
         selected.slice(0, selectedIndex),
-        selected.slice(selectedIndex + 1),
+        selected.slice(selectedIndex + 1)
       );
     }
     setSelected(newSelected);
   };
-
   const handleChangePage = (event: unknown, newPage: number) => {
     setPage(newPage);
   };
-
-  const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChangeRowsPerPage = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
   };
-
   const handleChangeDense = (event: React.ChangeEvent<HTMLInputElement>) => {
     setDense(event.target.checked);
   };
 
-  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
-
+  const emptyRows =
+    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
   const visibleRows = React.useMemo(
     () =>
       [...rows]
         .sort(getComparator(order, orderBy))
         .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage),
-    [order, orderBy, page, rowsPerPage],
+    [order, orderBy, page, rowsPerPage]
   );
 
   return (
-    <Box sx={{ width: '100%' }}>
-      <Paper sx={{ width: '100%', mb: 2 }}>
-        <EnhancedTableToolbar numSelected={selected.length} />
+    <Box sx={{ width: "100%" }}>
+      <Paper sx={{ width: "100%", mb: 2 }} className="table">
+        <EnhancedTableToolbar
+          haveAction={haveAction}
+          haveSearch={haveSearch}
+          numSelected={selected.length}
+          selectedAction={selectedAction}
+          unSelectedAction={unSelectedAction}
+        />
         <TableContainer>
           <Table
             sx={{ minWidth: 750 }}
             aria-labelledby="tableTitle"
-            size={dense ? 'small' : 'medium'}
+            size={dense ? "small" : "medium"}
           >
             <EnhancedTableHead
+              isSorted={isSorted}
+              isSelected={isSelected}
               numSelected={selected.length}
               order={order}
               orderBy={orderBy}
@@ -351,14 +380,14 @@ const ComTable = () => {
                     tabIndex={-1}
                     key={row.id}
                     selected={isItemSelected}
-                    sx={{ cursor: 'pointer' }}
+                    sx={{ cursor: "pointer" }}
                   >
                     <TableCell padding="checkbox">
                       <Checkbox
                         color="primary"
                         checked={isItemSelected}
                         inputProps={{
-                          'aria-labelledby': labelId,
+                          "aria-labelledby": labelId,
                         }}
                       />
                     </TableCell>
@@ -401,6 +430,6 @@ const ComTable = () => {
       </Paper>
     </Box>
   );
-}
+};
 
-export default ComTable
+export default ComTable;

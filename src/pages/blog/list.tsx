@@ -6,6 +6,5 @@ export default function ArticleListPage () {
     <ComContainer type="page">
       <ComTable />
     </ComContainer>
-   
   )
 }
