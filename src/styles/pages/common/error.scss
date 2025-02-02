@@ -1,0 +1,203 @@
+@use "@/styles/common/var.scss" as vars;
+@import url("https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap");
+
+
+.error-page {
+  background-color: hsl(vars.$primaryColor);
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: "Space Grotesk", sans-serif;
+  list-style: none;
+  color: white;
+  text-decoration: none;
+}
+
+/* styling for page container */
+.container {
+  width: 100vw;
+  height: 80vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.container .content {
+  width: 60%;
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: center;
+  align-items: center;
+}
+
+/* styling for lift side 'text content' */
+.container .content .left-side {
+  text-align: left;
+  width: 70vw;
+}
+
+.container .content .left-side h2 {
+  font-size: 4rem;
+  font-weight: 700;
+  font: bold;
+  margin: 5px 0;
+}
+
+.container .content .left-side p {
+  font-size: 1rem;
+  font-weight: 500;
+  opacity: 0.95;
+}
+
+.container .content .left-side button {
+  color: black;
+  background-color: white;
+  margin-top: 30px;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5rem;
+  font-weight: 700;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+.container .content .left-side button:hover {
+  opacity: 0.95;
+}
+.container .content .left-side button:active {
+  transform: scale(0.95);
+}
+
+/* styling for right side 'image' */
+.container .content .right-side {
+  width: 500px;
+  margin-right: 100px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.container .content .right-side img {
+  width: 100%;
+  transform: translateY(-1);
+  animation: Ghost-animation 3s infinite alternate;
+}
+
+.container .content .right-side__shadow {
+  margin-top: 30px;
+  border-radius: 50%;
+  font-size: 2rem;
+  width: 200px;
+  height: 25px;
+  background-color: rgba(0, 0, 0, 0.3);
+  filter: blur(4px);
+  transform: translateY(10px);
+  animation: Sahdow-animation 3s infinite alternate;
+}
+
+@keyframes Ghost-animation {
+  0% {
+    transform: translateY(-1px);
+  }
+  100% {
+    transform: translateY(10px);
+  }
+}
+/* animation for Shadow */
+@keyframes Sahdow-animation {
+  0% {
+    width: 170px;
+    transform: translateY(10px);
+  }
+  100% {
+    width: 120px;
+    transform: translateY(-1px);
+  }
+}
+
+@media only screen and (max-width: 900px) {
+  header .header-content {
+    width: 90%;
+  }
+
+  .container {
+    margin-top: 50px;
+    amrgin-bottom: 50px;
+  }
+  .container .content {
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  .container .content .left-side h2 {
+    font-size: 2rem;
+  }
+
+  .container .content .left-side {
+    width: 100vw;
+    text-align: center;
+  }
+
+  .container .content .right-side {
+    margin-right: 0;
+    margin-top: 50px;
+  }
+
+  .container .content .right-side img {
+    width: 200px;
+  }
+
+  footer {
+    margin-top: 50px;
+  }
+
+  @keyframes Sahdow-animation {
+    0% {
+      width: 150px;
+      transform: translateY(10px);
+    }
+    100% {
+      width: 100px;
+      transform: translateY(-1px);
+    }
+  }
+}
+
+@media only screen and (max-width: 600px) {
+  /* Down 600px */
+  header .header-content .navbar ul li {
+    margin-left: 20px;
+  }
+
+  .container {
+    margin-top: 50px;
+    amrgin-bottom: 50px;
+  }
+
+  /* styling for lift side 'text content' */
+  .container .content .left-side h2 {
+    font-size: 2rem;
+  }
+
+  /* styling for right side 'image' */
+  .container .content .right-side {
+    margin-top: 60px;
+  }
+
+  .container .content .right-side img {
+    width: 150px;
+  }
+
+  /* animation for Shadow */
+  @keyframes Sahdow-animation {
+    0% {
+      width: 120px;
+      transform: translateY(10px);
+    }
+    100% {
+      width: 80px;
+      transform: translateY(-1px);
+    }
+  }
+}
